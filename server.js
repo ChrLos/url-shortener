@@ -2,13 +2,14 @@ require("dotenv").config();
 const express = require('express')
 const mongoose = require('mongoose')
 const ShortUrl = require('./model/shortUrl')
+const path = require('path')
 const app = express()
 
 mongoose.connect(process.env.MONGODBURL);
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
-app.use(express.static(__dirname));
+app.use(express.static(path.resolve('./public')));
 
 app.get('/', async (req, res) => {
   const shortUrls = await ShortUrl.find()
