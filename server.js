@@ -41,7 +41,9 @@ app.post('/shortUrls', async (req, res) => {
 })
 
 app.post('/resetDatabase', async (req, res) => {
-  await mongoose.connection.dropDatabase();
+  const uuid = req.cookies.anonymousUserID 
+
+  await ShortUrl.deleteMany( {anonymousUserID: uuid} );
   
   res.redirect('/')
 })
