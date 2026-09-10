@@ -29,6 +29,17 @@ app.get('/', async (req, res) => {
 })
 
 app.post('/shortUrls', async (req, res) => {
+  const short = req.body.shortUrl
+
+  const existingShortUrl = await ShortUrl.findOne( {short} ).lean()
+
+  if (existingShortUrl) {
+    return res.status(409).json({
+      warning: true,
+      message: "Your Custom ShortURL have been used"
+    })
+  }
+  
   await ShortUrl.create({ 
     full: req.body.fullUrl,
     short: req.body.shortUrl || undefined,
