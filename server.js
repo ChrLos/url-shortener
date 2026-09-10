@@ -16,7 +16,6 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.resolve('./public')));
 
 app.get('/', async (req, res) => {
-  // if cookie not exist, create cookie. Then find one in database, give empty list if not found any
   let uuid = crypto.randomUUID()
   
   if (!req.cookies.anonymousUserID) {
