@@ -15,6 +15,10 @@ const shortUrlSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
+    },
+    anonymousUserID: {
+        type: String,
+        required: true
     }
 })
 

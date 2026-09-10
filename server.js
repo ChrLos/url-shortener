@@ -1,6 +1,9 @@
 require("dotenv").config();
 const express = require('express')
 const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+const crypto = require('crypto')
+
 const ShortUrl = require('./model/shortUrl')
 const path = require('path')
 const app = express()
@@ -8,18 +11,31 @@ const app = express()
 mongoose.connect(process.env.MONGODBURL);
 
 app.set('view engine', 'ejs')
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.resolve('./public')));
 
 app.get('/', async (req, res) => {
-  const shortUrls = await ShortUrl.find()
+  // if cookie not exist, create cookie. Then find one in database, give empty list if not found any
+  let uuid = crypto.randomUUID()
+  
+  if (!req.cookies.anonymousUserID) {
+    res.cookie("anonymousUserID", uuid)
+  } else {
+    uuid = req.cookies.anonymousUserID
+  }
+
+  console.log(uuid)
+
+  const shortUrls = await ShortUrl.find( {anonymousUserID: uuid} )
   res.render('index', { shortUrls: shortUrls })
 })
 
 app.post('/shortUrls', async (req, res) => {
   await ShortUrl.create({ 
     full: req.body.fullUrl,
-    short: req.body.shortUrl || undefined
+    short: req.body.shortUrl || undefined,
+    anonymousUserID: req.cookies.anonymousUserID
   })
   
   res.redirect('/')
