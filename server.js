@@ -24,8 +24,6 @@ app.get('/', async (req, res) => {
     uuid = req.cookies.anonymousUserID
   }
 
-  console.log(uuid)
-
   const shortUrls = await ShortUrl.find( {anonymousUserID: uuid} )
   res.render('index', { shortUrls: shortUrls })
 })
