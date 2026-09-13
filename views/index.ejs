@@ -11,16 +11,10 @@
     <div class="container">
         <h1>Url Shortener</h1>
         <form action="/shortUrls" method="POST" class="my-4 form-inline">
-            <div class="row g-2">
-                <div class="col">
-                    <label for="fullUrl" class="visually-hidden">Url</label>
-                    <input required placeholder="Url" type="url" name="fullUrl" id="fullUrl" class="form-control my-2 me-2">
-                </div>
-                <div class="col">
-                    <label for="shortUrl" class="visually-hidden">Custom Link</label>
-                    <input placeholder="Custom Link" type="text" name="shortUrl" id="shortUrl" class="form-control my-2 me-2">
-                </div>
-            </div>
+            <label for="fullUrl" class="visually-hidden">Full Url</label>
+            <input required placeholder="Full Url" type="url" name="fullUrl" id="fullUrl" class="form-control my-2 me-2 w-75">
+            <label for="shortUrl" class="visually-hidden">Custom Link (Optional)</label>
+            <input placeholder="Custom Link (Optional)" type="text" name="shortUrl" id="shortUrl" class="form-control my-2 me-2 w-25">
             <button class="btn btn-success" type="submit">Shrink</button>
         </form>
 
