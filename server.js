@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
-const crypto = require('crypto')
+const nanoId = require('nanoid')
 
 const ShortUrl = require('./model/shortUrl')
 const path = require('path')
@@ -16,14 +16,14 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.resolve('./public')));
 
 app.get('/', async (req, res) => {
-  let uuid = crypto.randomUUID()
-  
-  if (!req.cookies.anonymousUserID) {
-    res.cookie("anonymousUserID", crypto.randomUUID())
+  let anonymousUserID = req.cookies.anonymousUserID
+
+  if (!anonymousUserID) {
+    anonymousUserID = nanoId.nanoid()
+    res.cookie("anonymousUserID", anonymousUserID)
   }
 
-  uuid = req.cookies.anonymousUserID
-  const shortUrls = await ShortUrl.find( {anonymousUserID: uuid} )
+  const shortUrls = await ShortUrl.find( {anonymousUserID: anonymousUserID} )
   res.render('index', { shortUrls: shortUrls })
 })
 
@@ -47,10 +47,7 @@ app.post('/shortUrls', async (req, res) => {
 })
 
 app.post('/resetDatabase', async (req, res) => {
-  const uuid = req.cookies.anonymousUserID
-
-  await ShortUrl.deleteMany( {anonymousUserID: uuid} );
-  
+  await ShortUrl.deleteMany( {anonymousUserID: req.cookies.anonymousUserID} );
   res.redirect('/')
 })
 
