@@ -21,7 +21,7 @@ app.get('/', async (req, res) => {
   if (!anonymousUserID) {
     anonymousUserID = nanoId.nanoid()
     res.cookie("anonymousUserID", anonymousUserID, {
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: 'lax'
     })
