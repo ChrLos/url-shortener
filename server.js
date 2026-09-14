@@ -20,7 +20,11 @@ app.get('/', async (req, res) => {
 
   if (!anonymousUserID) {
     anonymousUserID = nanoId.nanoid()
-    res.cookie("anonymousUserID", anonymousUserID)
+    res.cookie("anonymousUserID", anonymousUserID, {
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: true,
+      sameSite: 'lax'
+    })
   }
 
   const shortUrls = await ShortUrl.find( {anonymousUserID: anonymousUserID} )
