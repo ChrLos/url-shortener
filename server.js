@@ -32,20 +32,22 @@ app.get('/', async (req, res) => {
 })
 
 app.post('/shortUrls', async (req, res) => {
-  const existingShortUrl = await ShortUrl.findOne( {short: req.body.shortUrl} ).lean()
-
-  if (existingShortUrl) {
-    return res.status(409).json({
-      warning: true,
-      message: "Your Custom ShortURL have been used"
+  try {
+    await ShortUrl.create({ 
+      full: req.body.fullUrl,
+      short: req.body.shortUrl || undefined,
+      anonymousUserID: req.cookies.anonymousUserID
     })
+  } catch (err) {
+    if (err.code == 11000) {
+      return res.status(409).json({
+        warning: true,
+        message: "Your Custom ShortURL have been used"
+      })
+    }
+
+    throw err
   }
-  
-  await ShortUrl.create({ 
-    full: req.body.fullUrl,
-    short: req.body.shortUrl || undefined,
-    anonymousUserID: req.cookies.anonymousUserID
-  })
   
   res.redirect('/')
 })
