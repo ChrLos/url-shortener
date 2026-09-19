@@ -27,13 +27,13 @@ app.get('/', async (req, res) => {
     })
   }
 
-  const shortUrls = await ShortUrl.find( {anonymousUserID: anonymousUserID} )
+  const shortUrls = await ShortUrl.find({ anonymousUserID: anonymousUserID })
   res.render('index', { shortUrls: shortUrls })
 })
 
 app.post('/shortUrls', async (req, res) => {
   try {
-    await ShortUrl.create({ 
+    await ShortUrl.create({
       full: req.body.fullUrl,
       short: req.body.shortUrl || undefined,
       anonymousUserID: req.cookies.anonymousUserID
@@ -48,12 +48,12 @@ app.post('/shortUrls', async (req, res) => {
 
     throw err
   }
-  
+
   res.redirect('/')
 })
 
 app.post('/resetDatabase', async (req, res) => {
-  await ShortUrl.deleteMany( {anonymousUserID: req.cookies.anonymousUserID} );
+  await ShortUrl.deleteMany({ anonymousUserID: req.cookies.anonymousUserID });
   res.redirect('/')
 })
 
