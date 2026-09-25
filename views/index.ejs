@@ -7,48 +7,66 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Url Shortener</title>
+    <link rel="stylesheet" href="style.css">
     <script src="/script.js" defer></script>
 </head>
 
 <body>
+    <header>
+        NanosURL
+    </header>
+
     <div class="container">
-        <h1>Url Shortener</h1>
-        <form action="/shortUrls" method="POST" class="my-4 form-inline">
-            <label for="fullUrl" class="visually-hidden">Full Url</label>
-            <input required placeholder="Full Url" type="url" name="fullUrl" id="fullUrl"
-                class="form-control my-2 me-2 w-75">
-            <label for="shortUrl" class="visually-hidden">Custom Link (Optional)</label>
-            <input placeholder="Custom Link (Optional)" type="text" name="shortUrl" id="shortUrl"
-                class="form-control my-2 me-2 w-25">
-            <button class="btn btn-success" type="submit">Shrink</button>
-        </form>
-
-        <table class="table table-striped table-responsive">
-            <thead>
-                <tr>
-                    <th>Full Url</th>
-                    <th>Shorten Url</th>
-                    <th>Clicks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% shortUrls.forEach(shortUrl=> { %>
+        <div class="left-pane">
+            <h1>History</h1>
+            <table class="table table-striped table-responsive">
+                <thead>
                     <tr>
-                        <td><a href="<%= shortUrl.full %>">
-                                <%= shortUrl.full %>
-                            </a></td>
-                        <td><a href="<%= shortUrl.short %>">
-                                <%= shortUrl.short %>
-                            </a></td>
-                        <td>
-                            <%= shortUrl.clicks %>
-                        </td>
+                        <th>Full Url</th>
+                        <th>Shorten Url</th>
+                        <th>Clicks</th>
                     </tr>
-                    <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% shortUrls.forEach(shortUrl=> { %>
+                        <tr>
+                            <td><a href="<%= shortUrl.full %>">
+                                    <%= shortUrl.full %>
+                                </a></td>
+                            <td><a href="<%= shortUrl.short %>">
+                                    <%= shortUrl.short %>
+                                </a></td>
+                            <td>
+                                <%= shortUrl.clicks %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
 
-        <button type="button" id="reset-data" class="btn btn-danger">Remove All Shortened Links</button>
+            <button type="button" id="reset-data" class="btn btn-danger">Remove All Shortened Links</button>
+        </div>
+
+        <div class="right-pane">
+            <form action="/shortUrls" method="POST" class="my-4 form-inline">
+                <div class="form-input">
+                    <div class="right-pane__fullURL">
+                        <label for="fullUrl">Full Url</label>
+                        <input required placeholder="Full Url" type="url" name="fullUrl" id="fullUrl"
+                            class="form-control my-2 me-2 w-100">
+                    </div>
+                    <div class="right-pane__shortURL">
+                        <label for="shortUrl">Shortened URL</label>
+                        <div class="shortened-url">
+                            <p>nanosurl.vercel.app/</p>
+                            <input placeholder="Custom Link" type="text" name="shortUrl" id="shortUrl"
+                                class="form-control my-2 me-2 w-50">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success" type="submit">Shrink URL</button>
+            </form>
+        </div>
     </div>
 </body>
 
